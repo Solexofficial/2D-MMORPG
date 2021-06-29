@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@300&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(./assets/Mountains1.png);
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.logo {
+  width: 620px;
+  height: 146px;
+  background-image: url(./assets/logo.png);
+  background-size: cover;
+  margin-bottom: 24px;
+}
+
+.canvas-wrap {
+  width: 616px;
+  height: 616px;
+  position: relative;
+  border-radius: 12px;
+  background: #b6b6b6;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Big Shoulders Stencil Display', cursive;
+  font-size: 38px;
+}
+
+.canvas-wrap canvas {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  bottom: 8px;
+  right: 8px;
+  z-index: 1;
+}
+
+.top {
+  background-image: url(./assets/border-top.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  height: 12px;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  z-index: 100;
+}
+
+.bottom {
+  background-image: url(./assets/border-bottom.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  height: 12px;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  z-index: 100;
+}
+
+.top-right {
+  background-image: url(./assets/border-top-right.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.top-left {
+  background-image: url(./assets/border-top-left.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.left {
+  background-image: url(./assets/border-left.png);
+  background-repeat: repeat-y;
+  position: absolute;
+  width: 12px;
+  top: 12px;
+  bottom: 12px;
+  left: 0;
+  z-index: 100;
+}
+
+.right {
+  background-image: url(./assets/border-right.png);
+  background-repeat: repeat-y;
+  position: absolute;
+  width: 12px;
+  top: 12px;
+  bottom: 12px;
+  right: 0;
+  z-index: 100;
+}
+
+.bottom-right {
+  background-image: url(./assets/border-bottom-right.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.bottom-left {
+  background-image: url(./assets/border-bottom-left.png);
+  background-repeat: repeat-x;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
