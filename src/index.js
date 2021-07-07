@@ -7,8 +7,8 @@ const ctx = canvas.getContext('2d');
 const spriteW = 48;
 const spriteH = 48;
 const shots = 3;
-const GAME_WIDTH = 600;
-const GAME_HEIGHT = 600;
+const GAME_WIDTH = parseInt(canvas.getAttribute('width'), 10);
+const GAME_HEIGHT = parseInt(canvas.getAttribute('height'), 10);
 
 let cycle = 0;
 let bottomPressed = false;
@@ -60,7 +60,6 @@ img.addEventListener('load', () => {
     if (bottomPressed) {
       side = 0;
       if (pY < GAME_HEIGHT - spriteH) {
-        console.log(pY);
         pY += 10;
       }
       cycle = (cycle + 1) % shots;
@@ -77,7 +76,6 @@ img.addEventListener('load', () => {
     if (leftPressed) {
       side = 48;
       if (pX > 0) {
-        console.log(pX);
         pX -= 10;
       }
       cycle = (cycle + 1) % shots;
