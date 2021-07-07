@@ -55,5 +55,5 @@ module.exports = {
     historyApiFallback: true,
   },
   devtool: NODE_ENV === 'development' ? 'source-map' : false,
-  'eval-source-map'
+
 };
