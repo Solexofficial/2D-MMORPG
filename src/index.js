@@ -15,8 +15,8 @@ let bottomPressed = false;
 let upPressed = false;
 let leftPressed = false;
 let rightPressed = false;
-let pY = 276;
-let pX = 276;
+let pX = (GAME_WIDTH - spriteW) / 2;
+let pY = (GAME_HEIGHT - spriteH) / 2;
 let side = 0;
 
 function keyDownHandler(e) {
