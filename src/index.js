@@ -7,45 +7,48 @@ const ctx = canvas.getContext('2d');
 const spriteW = 48;
 const spriteH = 48;
 const shots = 3;
-const GAME_WIDTH = parseInt(canvas.getAttribute('width'), 10);
-const GAME_HEIGHT = parseInt(canvas.getAttribute('height'), 10);
 
 let cycle = 0;
-let bottomPressed = false;
-let upPressed = false;
-let leftPressed = false;
-let rightPressed = false;
-let pX = (GAME_WIDTH - spriteW) / 2;
-let pY = (GAME_HEIGHT - spriteH) / 2;
-let side = 0;
+let pX = (canvas.width - spriteW) / 2;
+let pY = (canvas.height - spriteH) / 2;
+let direction = 0;
 
 function keyDownHandler(e) {
-  if (e.key === 'Down' || e.key === 'ArrowDown') {
-    bottomPressed = true;
-  }
-  if (e.key === 'Left' || e.key === 'ArrowLeft') {
-    leftPressed = true;
-  }
-  if (e.key === 'Up' || e.key === 'ArrowUp') {
-    upPressed = true;
-  }
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
-    rightPressed = true;
+  switch (e.key) {
+    case 'Down':
+    case 'ArrowDown':
+      direction = 'bottom';
+      break;
+    case 'Left':
+    case 'ArrowLeft':
+      direction = 'left';
+      break;
+    case 'Up':
+    case 'ArrowUp':
+      direction = 'up';
+      break;
+    case 'Right':
+    case 'ArrowRight':
+      direction = 'right';
+      break;
+    default:
+      break;
   }
 }
 
 function keyUpHandler(e) {
-  if (e.key === 'Down' || e.key === 'ArrowDown') {
-    bottomPressed = false;
-  }
-  if (e.key === 'Left' || e.key === 'ArrowLeft') {
-    leftPressed = false;
-  }
-  if (e.key === 'Up' || e.key === 'ArrowUp') {
-    upPressed = false;
-  }
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
-    rightPressed = false;
+  switch (e.key) {
+    case 'Down':
+    case 'ArrowDown':
+    case 'Left':
+    case 'ArrowLeft':
+    case 'Up':
+    case 'ArrowUp':
+    case 'Right':
+    case 'ArrowRight':
+      break;
+    default:
+      break;
   }
 }
 
@@ -57,39 +60,32 @@ img.src = characterSprite;
 
 img.addEventListener('load', () => {
   setInterval(() => {
-    if (bottomPressed) {
-      side = 0;
-      if (pY < GAME_HEIGHT - spriteH) {
-        pY += 10;
-      }
-      cycle = (cycle + 1) % shots;
-    }
-
-    if (upPressed) {
-      side = 144;
-      if (pY > 0) {
-        pY -= 10;
-      }
-      cycle = (cycle + 1) % shots;
-    }
-
-    if (leftPressed) {
-      side = 48;
-      if (pX > 0) {
-        pX -= 10;
-      }
-      cycle = (cycle + 1) % shots;
-    }
-
-    if (rightPressed) {
-      side = 96;
-      if (pX < GAME_WIDTH - spriteW) {
-        pX += 10;
-      }
-      cycle = (cycle + 1) % shots;
+    switch (direction) {
+      case 'up':
+        direction = spriteH * 3;
+        pY = pY > 0 ? (pY -= 10) : 0;
+        cycle = (cycle + 1) % shots;
+        break;
+      case 'right':
+        direction = spriteH * 2;
+        pX = pX < canvas.width - spriteW ? (pX += 10) : canvas.height - spriteW;
+        cycle = (cycle + 1) % shots;
+        break;
+      case 'bottom':
+        direction = spriteH * 0;
+        pY = pY < canvas.height - spriteH ? (pY += 10) : canvas.width - spriteH;
+        cycle = (cycle + 1) % shots;
+        break;
+      case 'left':
+        direction = spriteH;
+        pX = pX > 0 ? (pX -= 10) : 0;
+        cycle = (cycle + 1) % shots;
+        break;
+      default:
+        break;
     }
 
     ctx.clearRect(0, 0, 600, 600);
-    ctx.drawImage(img, cycle * spriteW, side, spriteW, spriteH, pX, pY, 48, 48);
+    ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
   }, 40);
 });
