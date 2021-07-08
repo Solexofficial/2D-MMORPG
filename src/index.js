@@ -4,6 +4,11 @@ import characterSprite from './assets/Male-5-Walk.png';
 import terrainAtlas from './assets/terrain.png';
 import worldCfg from './configs/world.json';
 import sprites from './configs/sprites';
+import ClientGame from './client/ClientGame';
+
+window.addEventListener('load', () => {
+  ClientGame.init({ tagId: 'game' });
+});
 
 const canvas = document.getElementById('game');
 const loading = document.getElementById('loading');
@@ -92,7 +97,7 @@ function walk(timestamp) {
       cycle = (cycle + 1) % shots;
       break;
     case 'bottom':
-      direction = spriteH * 0;
+      direction = 0;
       pY = pY < canvas.height - spriteH ? (pY += 10) : canvas.width - spriteH;
       cycle = (cycle + 1) % shots;
       break;
