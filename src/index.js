@@ -82,7 +82,7 @@ const img = document.createElement('img');
 img.src = characterSprite;
 
 function walk(timestamp) {
-  console.log('#timestamp', timestamp);
+  console.log(timestamp);
   ctx.clearRect(pX, pY, spriteW, spriteH);
   renderMap();
   switch (direction) {
