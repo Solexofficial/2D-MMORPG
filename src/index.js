@@ -1,8 +1,12 @@
 /* eslint-disable no-console */
 import './index.scss';
 import characterSprite from './assets/Male-5-Walk.png';
+import terrainAtlas from './assets/terrain.png';
+import worldCfg from './configs/world.json';
+import sprites from './configs/sprites';
 
 const canvas = document.getElementById('game');
+const loading = document.getElementById('loading');
 const ctx = canvas.getContext('2d');
 const spriteW = 48;
 const spriteH = 48;
@@ -12,6 +16,20 @@ let cycle = 0;
 let pX = (canvas.width - spriteW) / 2;
 let pY = (canvas.height - spriteH) / 2;
 let direction = 0;
+
+const terrain = document.createElement('img');
+terrain.src = terrainAtlas;
+
+function renderMap() {
+  loading.remove();
+  const { map } = worldCfg;
+  map.forEach((cfgRow, y) => {
+    cfgRow.forEach((cfgCell, x) => {
+      const [sX, sY, sW, sH] = sprites.terrain[cfgCell[0]].frames[0];
+      ctx.drawImage(terrain, sX, sY, sW, sH, x * spriteW, y * spriteH, spriteW, spriteH);
+    });
+  });
+}
 
 function keyDownHandler(e) {
   switch (e.key) {
@@ -59,6 +77,8 @@ const img = document.createElement('img');
 img.src = characterSprite;
 
 img.addEventListener('load', () => {
+  ctx.clearRect(pX, pY, spriteW, spriteH);
+  renderMap();
   setInterval(() => {
     switch (direction) {
       case 'up':
@@ -84,8 +104,11 @@ img.addEventListener('load', () => {
       default:
         break;
     }
-
-    ctx.clearRect(0, 0, 600, 600);
+    renderMap();
     ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
   }, 40);
+});
+
+terrain.addEventListener('load', () => {
+  renderMap();
 });
