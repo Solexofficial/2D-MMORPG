@@ -76,37 +76,41 @@ document.addEventListener('keyup', keyUpHandler);
 const img = document.createElement('img');
 img.src = characterSprite;
 
-img.addEventListener('load', () => {
+function walk(timestamp) {
+  console.log('#timestamp', timestamp);
   ctx.clearRect(pX, pY, spriteW, spriteH);
   renderMap();
-  setInterval(() => {
-    switch (direction) {
-      case 'up':
-        direction = spriteH * 3;
-        pY = pY > 0 ? (pY -= 10) : 0;
-        cycle = (cycle + 1) % shots;
-        break;
-      case 'right':
-        direction = spriteH * 2;
-        pX = pX < canvas.width - spriteW ? (pX += 10) : canvas.height - spriteW;
-        cycle = (cycle + 1) % shots;
-        break;
-      case 'bottom':
-        direction = spriteH * 0;
-        pY = pY < canvas.height - spriteH ? (pY += 10) : canvas.width - spriteH;
-        cycle = (cycle + 1) % shots;
-        break;
-      case 'left':
-        direction = spriteH;
-        pX = pX > 0 ? (pX -= 10) : 0;
-        cycle = (cycle + 1) % shots;
-        break;
-      default:
-        break;
-    }
-    renderMap();
-    ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
-  }, 40);
+  switch (direction) {
+    case 'up':
+      direction = spriteH * 3;
+      pY = pY > 0 ? (pY -= 10) : 0;
+      cycle = (cycle + 1) % shots;
+      break;
+    case 'right':
+      direction = spriteH * 2;
+      pX = pX < canvas.width - spriteW ? (pX += 10) : canvas.height - spriteW;
+      cycle = (cycle + 1) % shots;
+      break;
+    case 'bottom':
+      direction = spriteH * 0;
+      pY = pY < canvas.height - spriteH ? (pY += 10) : canvas.width - spriteH;
+      cycle = (cycle + 1) % shots;
+      break;
+    case 'left':
+      direction = spriteH;
+      pX = pX > 0 ? (pX -= 10) : 0;
+      cycle = (cycle + 1) % shots;
+      break;
+    default:
+      break;
+  }
+  renderMap();
+  ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
+  window.requestAnimationFrame(walk);
+}
+
+img.addEventListener('load', () => {
+  window.requestAnimationFrame(walk);
 });
 
 terrain.addEventListener('load', () => {
