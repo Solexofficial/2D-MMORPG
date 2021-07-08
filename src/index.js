@@ -20,7 +20,8 @@ let direction = 0;
 const terrain = document.createElement('img');
 terrain.src = terrainAtlas;
 
-terrain.addEventListener('load', () => {
+function renderMap() {
+  loading.remove();
   const { map } = worldCfg;
   map.forEach((cfgRow, y) => {
     cfgRow.forEach((cfgCell, x) => {
@@ -28,7 +29,7 @@ terrain.addEventListener('load', () => {
       ctx.drawImage(terrain, sX, sY, sW, sH, x * spriteW, y * spriteH, spriteW, spriteH);
     });
   });
-});
+}
 
 function keyDownHandler(e) {
   switch (e.key) {
@@ -76,7 +77,8 @@ const img = document.createElement('img');
 img.src = characterSprite;
 
 img.addEventListener('load', () => {
-  loading.remove();
+  ctx.clearRect(pX, pY, spriteW, spriteH);
+  renderMap();
   setInterval(() => {
     switch (direction) {
       case 'up':
@@ -102,8 +104,11 @@ img.addEventListener('load', () => {
       default:
         break;
     }
-
-    ctx.clearRect(0, 0, 600, 600);
+    renderMap();
     ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
   }, 40);
+});
+
+terrain.addEventListener('load', () => {
+  renderMap();
 });
