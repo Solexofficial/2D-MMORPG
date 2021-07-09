@@ -1,3 +1,5 @@
+import EventSourceMixin from '../common/EventSourceMixin';
+
 class ClientEngine {
   constructor(canvas) {
     Object.assign(this, {
@@ -9,7 +11,6 @@ class ClientEngine {
     });
 
     this.ctx = canvas.getContext('2d');
-
     this.loop = this.loop.bind(this);
   }
 
@@ -18,11 +19,11 @@ class ClientEngine {
   }
 
   loop(timestamp) {
-    console.log(timestamp);
     const { ctx, canvas } = this;
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    this.trigger('render', timestamp);
     this.initNextFrame();
   }
 
@@ -32,17 +33,14 @@ class ClientEngine {
 
   loadSprites(spritesGroup) {
     this.imageLoaders = [];
-
     for (const groupName in spritesGroup) {
-      if (Object.prototype.hasOwnProperty.call(groupName, spritesGroup)) {
+      if (Object.prototype.hasOwnProperty.call(spritesGroup, groupName)) {
         const group = spritesGroup[groupName];
         this.sprites[groupName] = group;
-        console.log(group);
 
         for (const spriteName in group) {
           if (Object.prototype.hasOwnProperty.call(group, spriteName)) {
             const { img } = group[spriteName];
-            console.log('#img', img);
             if (!this.images[img]) {
               this.imageLoaders.push(this.loadImage(img));
             }
@@ -50,7 +48,6 @@ class ClientEngine {
         }
       }
     }
-
     return Promise.all(this.imageLoaders);
   }
 
@@ -62,6 +59,17 @@ class ClientEngine {
       i.src = url;
     });
   }
+
+  // eslint-disable-next-line object-curly-newline
+  renderSpriteFrame({ sprite, frame, x, y, w, h }) {
+    const spriteCfg = this.sprites[sprite[0]][sprite[1]];
+    const [fx, fy, fw, fh] = spriteCfg.frames[frame];
+    const img = this.images[spriteCfg.img];
+
+    this.ctx.drawImage(img, fx, fy, fw, fh, x, y, w, h);
+  }
 }
+
+Object.assign(ClientEngine.prototype, EventSourceMixin);
 
 export default ClientEngine;

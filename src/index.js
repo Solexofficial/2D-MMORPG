@@ -25,7 +25,7 @@ let direction = 0;
 const terrain = document.createElement('img');
 terrain.src = terrainAtlas;
 
-function renderMap() {
+terrain.addEventListener('load', () => {
   loading.remove();
   const { map } = worldCfg;
   map.forEach((cfgRow, y) => {
@@ -34,7 +34,7 @@ function renderMap() {
       ctx.drawImage(terrain, sX, sY, sW, sH, x * spriteW, y * spriteH, spriteW, spriteH);
     });
   });
-}
+});
 
 function keyDownHandler(e) {
   switch (e.key) {
@@ -81,10 +81,9 @@ document.addEventListener('keyup', keyUpHandler);
 const img = document.createElement('img');
 img.src = characterSprite;
 
+// eslint-disable-next-line no-unused-vars
 function walk(timestamp) {
-  console.log(timestamp);
   ctx.clearRect(pX, pY, spriteW, spriteH);
-  renderMap();
   switch (direction) {
     case 'up':
       direction = spriteH * 3;
@@ -109,15 +108,10 @@ function walk(timestamp) {
     default:
       break;
   }
-  renderMap();
   ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
   window.requestAnimationFrame(walk);
 }
 
 img.addEventListener('load', () => {
   window.requestAnimationFrame(walk);
-});
-
-terrain.addEventListener('load', () => {
-  renderMap();
 });
