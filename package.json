@@ -8,7 +8,7 @@
     "start": "node scripts/start.js",
     "lint": "npx eslint src/**/*.js",
     "prettier": "npx prettier --write .",
-    "dev": "npx webpack server",
+    "dev": "cross-env NODE_ENV=development npx webpack server",
     "prepare": "husky install"
   },
   "repository": {
