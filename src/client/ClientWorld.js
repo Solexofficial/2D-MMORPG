@@ -1,11 +1,24 @@
-class ClientWorld {
+import PositionedObject from '../common/PositionedObject';
+
+class ClientWorld extends PositionedObject {
   constructor(game, engine, levelCfg) {
+    super();
+
+    const worldHeight = levelCfg.map.length;
+    const worldWidth = levelCfg.map[0].length;
+    const cellSize = engine.canvas.height / levelCfg.camera.height;
+
     Object.assign(this, {
       game,
       engine,
       levelCfg,
-      height: levelCfg.map.length,
-      width: levelCfg.map[0].length,
+      height: worldHeight * cellSize,
+      width: worldWidth * cellSize,
+      worldWidth,
+      worldHeight,
+      cellWidth: cellSize,
+      cellHeight: cellSize,
+      map: [],
     });
   }
 
