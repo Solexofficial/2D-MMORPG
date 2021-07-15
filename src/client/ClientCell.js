@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import PositionedObject from '../common/PositionedObject';
 import ClientGameObject from './ClientGameObject';
 

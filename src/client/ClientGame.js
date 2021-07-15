@@ -10,10 +10,16 @@ class ClientGame {
     Object.assign(this, {
       cfg,
       gameObjects,
+      player: null,
     });
     this.engine = this.createEngine();
     this.world = this.createWorld();
     this.initEngine();
+    this.initKeys();
+  }
+
+  setPlayer(player) {
+    this.player = player;
   }
 
   createEngine() {
@@ -22,6 +28,20 @@ class ClientGame {
 
   createWorld() {
     return new ClientWorld(this, this.engine, levelCfg);
+  }
+
+  initKeys() {
+    this.engine.input.onKey({
+      ArrowLeft: (keydown) => {
+        console.log(keydown);
+        if (keydown) {
+          this.player.moveByCellCoord(-1, 0, (cell) => {
+            console.log('#### cell', cell.findObjectsByType('grass'));
+            return cell.findObjectsByType('grass').length;
+          });
+        }
+      },
+    });
   }
 
   initEngine() {
