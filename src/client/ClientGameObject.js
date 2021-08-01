@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable object-curly-newline */
 import MovableObject from '../common/MovableObject';
 import { animateEx } from '../common/util';
@@ -9,11 +8,9 @@ class ClientGameObject extends MovableObject {
 
     const { x, y, width, height } = cfg.cell;
 
-    const world = cfg.cell.world;
+    const { world } = cfg.cell;
     const gameObjs = world.game.gameObjects;
-
     const objCfg = typeof cfg.objCfg === 'string' ? { type: cfg.objCfg } : cfg.objCfg;
-    console.log('####: typeof cfg.objCfg', typeof cfg.objCfg);
 
     if (objCfg.player) {
       world.game.setPlayer(this);
@@ -46,11 +43,13 @@ class ClientGameObject extends MovableObject {
   moveToCellCoord(dcol, drow, conditionCallback = null) {
     const { world } = this;
     const newCell = world.cellAt(dcol, drow);
-    const canMovie = !conditionCallback || conditionCallback(newCell);
-    if (canMovie) {
+    const canMove = !conditionCallback || conditionCallback(newCell);
+
+    if (canMove) {
       this.setCell(newCell);
     }
-    return canMovie;
+
+    return canMove;
   }
 
   setCell(newCell) {
@@ -66,13 +65,20 @@ class ClientGameObject extends MovableObject {
     }
   }
 
+  setState(state) {
+    this.state = state;
+
+    if (this.world) {
+      this.animationStartTime = this.world.engine.lastRenderTime;
+    }
+  }
+
   getCurrentFrame(time) {
     const state = this.spriteCfg.states[this.state];
     const lengthFrame = state.frames.length;
     const animate = animateEx(lengthFrame, this.animationStartTime, time, state.duration, true);
-    // Math.floor === posNumber | 0
     // eslint-disable-next-line no-bitwise
-    const frame = ((lengthFrame + animate.offset) | 0) & lengthFrame;
+    const frame = ((lengthFrame + animate.offset) | 0) % lengthFrame;
 
     return state.frames[frame];
   }
@@ -81,10 +87,9 @@ class ClientGameObject extends MovableObject {
     super.render(time);
 
     const { x, y, width, height, world } = this;
-    const engine = world.engine;
+    const { engine } = world;
 
-    // eslint-disable-next-line no-unused-vars
-    const { sprite, frame, states, type } = this.spriteCfg;
+    const { sprite, frame, type } = this.spriteCfg;
 
     const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);
 
@@ -95,14 +100,6 @@ class ClientGameObject extends MovableObject {
     if (this.cell) {
       this.cell.removeGameObject(this);
       this.cell = null;
-    }
-  }
-
-  setState(state) {
-    this.state = state;
-
-    if (this.world) {
-      this.animationStartTime = this.world.engine.lastRenderTime;
     }
   }
 }

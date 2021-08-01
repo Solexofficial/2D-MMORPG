@@ -31,7 +31,7 @@ class ClientGame {
   }
 
   getWorld() {
-    return this.map;
+    return this.world;
   }
 
   initKeys() {
@@ -54,13 +54,13 @@ class ClientGame {
     const { player } = this;
 
     if (player && player.motionProgress === 1) {
-      const canMovie = player.moveByCellCoord(
+      const canMove = player.moveByCellCoord(
         dirs[dir][0],
         dirs[dir][1],
         (cell) => cell.findObjectsByType('grass').length,
       );
 
-      if (canMovie) {
+      if (canMove) {
         player.setState(dir);
         player.once('motion-stopped', () => player.setState('main'));
       }
@@ -69,17 +69,13 @@ class ClientGame {
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      // eslint-disable-next-line no-unused-vars
-      console.log('####: initEngine');
-
       this.world.init();
       this.engine.on('render', (_, time) => {
-        console.log('####: this.player', this.player);
-
         this.engine.camera.focusAtGameObject(this.player);
         this.world.render(time);
       });
       this.engine.start();
+      this.initKeys();
     });
   }
 
