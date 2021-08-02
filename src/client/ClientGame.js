@@ -12,18 +12,19 @@ class ClientGame {
       gameObjects,
       player: null,
     });
+
     this.engine = this.createEngine();
     this.world = this.createWorld();
     this.initEngine();
-    this.initKeys();
   }
 
   setPlayer(player) {
     this.player = player;
+    this.player.playerName = this.cfg.playerName;
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+    return new ClientEngine(document.getElementById(this.cfg.tagID), this);
   }
 
   createWorld() {
@@ -32,6 +33,18 @@ class ClientGame {
 
   getWorld() {
     return this.world;
+  }
+
+  initEngine() {
+    this.engine.loadSprites(sprites).then(() => {
+      this.world.init();
+      this.engine.on('render', (_, time) => {
+        this.engine.camera.focusAtGameObject(this.player);
+        this.world.render(time);
+      });
+      this.engine.start();
+      this.initKeys();
+    });
   }
 
   initKeys() {
@@ -67,22 +80,11 @@ class ClientGame {
     }
   }
 
-  initEngine() {
-    this.engine.loadSprites(sprites).then(() => {
-      this.world.init();
-      this.engine.on('render', (_, time) => {
-        this.engine.camera.focusAtGameObject(this.player);
-        this.world.render(time);
-      });
-      this.engine.start();
-      this.initKeys();
-    });
-  }
-
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
     }
   }
 }
+
 export default ClientGame;
