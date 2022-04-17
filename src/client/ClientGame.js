@@ -12,18 +12,19 @@ class ClientGame {
       gameObjects,
       player: null,
     });
+
     this.engine = this.createEngine();
     this.world = this.createWorld();
     this.initEngine();
-    this.initKeys();
   }
 
   setPlayer(player) {
     this.player = player;
+    this.player.playerName = this.cfg.playerName;
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+    return new ClientEngine(document.getElementById(this.cfg.tagID), this);
   }
 
   createWorld() {
@@ -31,7 +32,19 @@ class ClientGame {
   }
 
   getWorld() {
-    return this.map;
+    return this.world;
+  }
+
+  initEngine() {
+    this.engine.loadSprites(sprites).then(() => {
+      this.world.init();
+      this.engine.on('render', (_, time) => {
+        this.engine.camera.focusAtGameObject(this.player);
+        this.world.render(time);
+      });
+      this.engine.start();
+      this.initKeys();
+    });
   }
 
   initKeys() {
@@ -54,33 +67,17 @@ class ClientGame {
     const { player } = this;
 
     if (player && player.motionProgress === 1) {
-      const canMovie = player.moveByCellCoord(
+      const canMove = player.moveByCellCoord(
         dirs[dir][0],
         dirs[dir][1],
         (cell) => cell.findObjectsByType('grass').length,
       );
 
-      if (canMovie) {
+      if (canMove) {
         player.setState(dir);
         player.once('motion-stopped', () => player.setState('main'));
       }
     }
-  }
-
-  initEngine() {
-    this.engine.loadSprites(sprites).then(() => {
-      // eslint-disable-next-line no-unused-vars
-      console.log('####: initEngine');
-
-      this.world.init();
-      this.engine.on('render', (_, time) => {
-        console.log('####: this.player', this.player);
-
-        this.engine.camera.focusAtGameObject(this.player);
-        this.world.render(time);
-      });
-      this.engine.start();
-    });
   }
 
   static init(cfg) {
@@ -89,4 +86,5 @@ class ClientGame {
     }
   }
 }
+
 export default ClientGame;

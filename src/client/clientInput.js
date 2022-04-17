@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable */
 import EventSourceMixin from '../common/EventSourceMixin';
 
 class ClientInput {

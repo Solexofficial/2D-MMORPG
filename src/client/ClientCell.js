@@ -1,10 +1,11 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
 /* eslint-disable function-paren-newline */
+/* eslint-disable no-return-assign */
+/* eslint-disable max-len */
+/* eslint-disable no-param-reassign */
 /* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable import/extensions */
 import PositionedObject from '../common/PositionedObject';
 import ClientGameObject from './ClientGameObject';
+import ClientPlayer from './ClientPlayer';
 
 class ClientCell extends PositionedObject {
   constructor(cfg) {
@@ -20,6 +21,9 @@ class ClientCell extends PositionedObject {
         y: cellWidth * cfg.cellRow,
         width: cellWidth,
         height: cellHeight,
+        col: cfg.cellCol,
+        row: cfg.cellRow,
+        objectClasses: { player: ClientPlayer },
       },
       cfg,
     );
@@ -28,10 +32,23 @@ class ClientCell extends PositionedObject {
   }
 
   initGameObjects() {
-    const { cellCfg } = this;
+    const { cellCfg, objectClasses } = this;
 
     this.objects = cellCfg.map((layer, layerId) =>
-      layer.map((objCfg) => new ClientGameObject({ cell: this, objCfg, layerId })),
+      layer.map((objCfg) => {
+        let ObjectClasses;
+
+        if (objCfg.class) {
+          ObjectClasses = objectClasses[objCfg.class];
+        } else {
+          ObjectClasses = ClientGameObject;
+        }
+        return new ObjectClasses({
+          cell: this,
+          objCfg,
+          layerId,
+        });
+      }),
     );
   }
 
@@ -57,18 +74,15 @@ class ClientCell extends PositionedObject {
   }
 
   removeGameObject(objToRemove) {
-    // this.objects = this.objects.filter((obj) => obj !== objToRemove);
-    // eslint-disable-next-line max-len
     const { objects } = this;
-    // eslint-disable-next-line max-len
-    objects.forEach((layer, layerId) => (this.objects[layerId] = layer.filter((obj) => obj !== objToRemove)));
+    objects.forEach((layer, layerId) => (objects[layerId] = layer.filter((obj) => obj !== objToRemove)));
   }
 
   findObjectsByType(type) {
-    let foundObjects = [];
-    // eslint-disable-next-line max-len
-    this.objects.forEach((layer) => (foundObjects = [...foundObjects, ...layer].filter((obj) => obj.type === type)));
-    return foundObjects;
+    let foundobjects = [];
+
+    this.objects.forEach((layer) => (foundobjects = [...foundobjects, ...layer].filter((obj) => obj.type === type)));
+    return foundobjects;
   }
 }
 
