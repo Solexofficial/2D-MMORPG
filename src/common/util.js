@@ -1,10 +1,9 @@
-/* eslint-disable camelcase */
-/* eslint-disable no-param-reassign */
-export function clamp(x, from_x, to_x) {
-  if (x < from_x) x = from_x;
-  if (x > to_x) x = to_x;
+export function clamp(x, fromX, toX) {
+  let result = x;
+  if (result < fromX) result = fromX;
+  if (result > toX) result = toX;
 
-  return x;
+  return result;
 }
 
 export function animateEx(dx, startTime, currentTime, speed, looped = false) {
@@ -18,4 +17,13 @@ export function animateEx(dx, startTime, currentTime, speed, looped = false) {
   }
 
   return { offset: dx * time, progress: time };
+}
+
+const normalize = (num) => (num.toString().length > 1 ? num : `0${num}`);
+
+export function getTime(date) {
+  const convertDate = new Date(date);
+  return `${normalize(convertDate.getHours())}:${normalize(convertDate.getMinutes())}:${normalize(
+    convertDate.getSeconds(),
+  )}`;
 }

@@ -1,7 +1,3 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable max-len */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-plusplus */
 /* eslint-disable object-curly-newline */
 import PositionedObject from '../common/PositionedObject';
 import ClientCell from './ClientCell';
@@ -30,6 +26,7 @@ class ClientWorld extends PositionedObject {
   }
 
   init() {
+    // eslint-disable-next-line object-curly-newline
     const { levelCfg, map, worldWidth, worldHeight } = this;
 
     for (let row = 0; row < worldHeight; row++) {
@@ -49,24 +46,27 @@ class ClientWorld extends PositionedObject {
   }
 
   render(time) {
-    const { levelCfg } = this;
+    const {
+      // map, worldWidth, worldHeight,
+      levelCfg,
+    } = this;
 
-    for (let layerId = 0; layerId < levelCfg.layers.length; layerId++) {
-      const layer = levelCfg.layers[layerId];
+    for (let layerID = 0; layerID < levelCfg.layers.length; layerID++) {
+      const layer = levelCfg.layers[layerID];
 
       if (layer.isStatic) {
-        this.renderStaticLayer(time, layer, layerId);
+        this.renderStaticLayer(time, layer, layerID);
       } else {
-        this.renderDynamicLayer(time, layerId, this.getRenderRange());
+        this.renderDynamicLayer(time, layerID, this.getRenderRange());
       }
     }
   }
 
-  renderStaticLayer(time, layer, layerId) {
+  renderStaticLayer(time, layer, layerID) {
     const { engine } = this;
     const { camera } = engine;
 
-    const layerName = `static_layer_${layerId}`;
+    const layerName = `static_layer_${layerID}`;
     const cameraPos = camera.worldBounds();
 
     if (!layer.isRendered) {
@@ -75,7 +75,7 @@ class ClientWorld extends PositionedObject {
 
       camera.moveTo(0, 0, false);
 
-      this.renderDynamicLayer(time, layerId);
+      this.renderDynamicLayer(time, layerID);
 
       camera.moveTo(cameraPos.x, cameraPos.y, false);
 
@@ -83,24 +83,31 @@ class ClientWorld extends PositionedObject {
       layer.isRendered = true;
     }
 
-    engine.renderCanvas(layerName, cameraPos, { x: 0, y: 0, width: cameraPos.width, height: cameraPos.height });
+    engine.renderCanvas(layerName, cameraPos, {
+      x: 0,
+      y: 0,
+      width: cameraPos.width,
+      height: cameraPos.height,
+    });
   }
 
-  renderDynamicLayer(time, layerId, rangeCells) {
+  renderDynamicLayer(time, layerID, rangeCells) {
     const { map, worldWidth, worldHeight } = this;
 
-    if (!rangeCells) {
-      rangeCells = {
+    let newRangeCells = rangeCells;
+
+    if (!newRangeCells) {
+      newRangeCells = {
         startCell: this.cellAt(0, 0),
         endCell: this.cellAt(worldWidth - 1, worldHeight - 1),
       };
     }
 
-    const { startCell, endCell } = rangeCells;
+    const { startCell, endCell } = newRangeCells;
 
     for (let { row } = startCell; row <= endCell.row; row++) {
       for (let { col } = startCell; col <= endCell.col; col++) {
-        map[row][col].render(time, layerId);
+        map[row][col].render(time, layerID);
       }
     }
   }

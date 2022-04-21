@@ -4,41 +4,61 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JS Marathon Pro Edition | RPG Game</title>
+    <title>JS Marathon PRO Edition</title>
   </head>
   <body>
-      <div class="wrap">
-    <div class="logo"></div>
-    <div class="canvas-wrap">
-      <canvas id="game" width="600" height="600" tabindex="1"></canvas>
-      <h3 id="loading">Loading...</h3>
-      <div class="border">
-        <div class="top-left"></div>
-        <div class="top"></div>
-        <div class="top-right"></div>
-        <div class="right"></div>
-        <div class="bottom-right"></div>
-        <div class="bottom"></div>
-        <div class="bottom-left"></div>
-        <div class="left"></div>
+    <div class="wrap">
+      <div class="logo"></div>
+      <div class="canvas-wrap">
+        <div class="start-game" style="display: none">;
+          <form id="nameForm">
+            <div class="row">
+              Твоё имя воин?
+            </div>
+            <div class="row">
+              <input class="input" type="text" name="name" id="name" autocomplete="off">
+            </div>
+            <div class="row">
+              <button class="btn">
+                START GAME
+              </button>
+            </div>
+          </form>
+        </div>
+        <canvas id="game" width="600" height="600" tabindex="1"></canvas>
+        <h3>Loading...</h3>
+        <div class="border">
+          <div class="top-left"></div>
+          <div class="top"></div>
+          <div class="top-right"></div>
+          <div class="right"></div>
+          <div class="bottom-right"></div>
+          <div class="bottom"></div>
+          <div class="bottom-left"></div>
+          <div class="left"></div>
+        </div>
       </div>
-
-      <div class="start-game">
-        <form id="nameForm">
-          <div class="row">
-            Твоё имя воин?
-          </div>
-          <div class="row">
-            <input class="input" type="text" name="name" id="name">
-          </div>
-          <div class="row">
-            <button class="btn">
-              START GAME
+      <div class="chat-wrap" style="display: none">
+        <div class="message"></div>
+        <div class="send">
+          <form id="form">
+            <input type="text" id="input" autocomplete="off">
+            <button>
+              SEND
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
+        <div class="border">
+          <div class="top-left"></div>
+          <div class="top"></div>
+          <div class="top-right"></div>
+          <div class="right"></div>
+          <div class="bottom-right"></div>
+          <div class="bottom"></div>
+          <div class="bottom-left"></div>
+          <div class="left"></div>
+        </div>
       </div>
     </div>
-  </div>
   </body>
 </html>

@@ -18,6 +18,7 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-image: url(./assets/Mountains1.png);
+  // overflow: overlay;
 }
 
 .wrap {
@@ -58,6 +59,11 @@ body {
   right: 8px;
   z-index: 1;
 }
+
+// #game {
+//   height: 600px;
+//   width: 600px;
+// }
 
 .top {
   background-image: url(./assets/border-top.png);
@@ -208,3 +214,62 @@ body {
     position: absolute;
   }
 }
+
+.chat-wrap {
+  position: relative;
+  background-color: #f4f4f4;
+  border-radius: 20px;
+  width: 616px;
+  height: 300px;
+}
+
+.send {
+  height: 28px;
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+}
+
+.send form {
+  display: flex;
+  align-content: stretch;
+}
+
+.send form input {
+  width: 100%;
+  height: 28px;
+  font-size: 14px;
+  padding: 0 8px;
+}
+
+.send form button {
+  background: #0633ff;
+  color: #fff;
+  border: 1px solid #838383;
+  border-radius: 0 4px 4px 0;
+  padding: 0 8px;
+}
+
+.message {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 36px;
+  overflow: scroll;
+  padding: 6px 8px;
+}
+
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   height: 10px;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background: rgba(90, 90, 90);
+// }
+
+// ::-webkit-scrollbar-track {
+//   background: rgba(0, 0, 0, 0.2);
+// }
