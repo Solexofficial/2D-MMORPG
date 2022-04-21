@@ -1,4 +1,5 @@
-import { animateEx, clamp } from './util';
+import { clamp, animateEx } from './util';
+// import clamp from './util';
 import PositionedObject from './PositionedObject';
 
 class MovableObject extends PositionedObject {

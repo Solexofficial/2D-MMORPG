@@ -29,6 +29,12 @@
         "sprite": ["terrain", "npcSpawn"],
         "frame": 0
     },
+    "door": {
+        "name": "door",
+        "type": "static",
+        "sprite": ["terrain", "door"],
+        "frame": 0
+    },
     "boy1": {
         "name": "boy1",
         "type": "animated",

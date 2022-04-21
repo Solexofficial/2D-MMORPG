@@ -29,7 +29,6 @@ class ClientApi {
   }
 
   onJoin(player) {
-    console.log(player);
     this.game.createCurrentPlayer(player.player);
     this.game.setPlayers(player.playersList);
   }
@@ -39,7 +38,6 @@ class ClientApi {
   }
 
   onPlayerMove(moveCfg) {
-    console.log(moveCfg);
     const { game } = this;
     const { oldCol, oldRow, col, row, id } = moveCfg;
     const player = game.getPlayerById(id);
@@ -58,7 +56,6 @@ class ClientApi {
         state = 'left';
       }
 
-      console.log(state);
       player.setState(state);
       player.once('motion-stopped', () => player.setState('main'));
     }

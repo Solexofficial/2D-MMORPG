@@ -55,16 +55,6 @@ class ClientGameObject extends MovableObject {
       newCell.addGameObject(this);
 
       this.moveTo(newCell.x, newCell.y, true, 200);
-
-      // const {
-      //   x, y, width, height,
-      // } = newCell;
-      // Object.assign(this, {
-      //   x,
-      //   y,
-      //   width,
-      //   height,
-      // });
     }
   }
 
@@ -90,7 +80,6 @@ class ClientGameObject extends MovableObject {
 
     const { x, y, width, height, world } = this;
     const { engine } = world;
-    // states
     const { sprite, frame, type } = this.spriteCfg;
 
     const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);

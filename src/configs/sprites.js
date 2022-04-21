@@ -9,19 +9,23 @@ export default {
     },
     water: {
       img: terrainIMG,
-      frames: [[0, 576, 64, 64]],
+      frames: [[128, 128, 64, 64]],
     },
     wall: {
       img: terrainIMG,
-      frames: [[448, 64, 64, 64]],
+      frames: [[64, 64, 64, 64]],
     },
     spawn: {
       img: terrainIMG,
-      frames: [[384, 640, 64, 64]],
+      frames: [[256, 64, 64, 64]],
     },
     npcSpawn: {
       img: terrainIMG,
-      frames: [[896, 576, 64, 64]],
+      frames: [[576, 64, 64, 64]],
+    },
+    door: {
+      img: terrainIMG,
+      frames: [[704, 128, 64, 64]],
     },
   },
   characters: {

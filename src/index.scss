@@ -17,24 +17,15 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url(./assets/Mountains1.png);
-  // overflow: overlay;
+  background-image: url(./assets/Mountains1.jpg);
 }
 
 .wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   min-height: 100vh;
-}
-
-.logo {
-  width: 620px;
-  height: 146px;
-  background-image: url(./assets/logo.png);
-  background-size: cover;
-  margin-bottom: 24px;
 }
 
 .canvas-wrap {
@@ -59,11 +50,6 @@ body {
   right: 8px;
   z-index: 1;
 }
-
-// #game {
-//   height: 600px;
-//   width: 600px;
-// }
 
 .top {
   background-image: url(./assets/border-top.png);
@@ -164,8 +150,9 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-  background-image: url(./assets/WorldMap.png);
+  background-image: url(./assets/WorldMap.jpg);
   background-position: center;
+  background-size: 100% 100%;
   color: #f4f4f4;
 }
 
@@ -260,16 +247,3 @@ body {
   overflow: scroll;
   padding: 6px 8px;
 }
-
-// ::-webkit-scrollbar {
-//   width: 10px;
-//   height: 10px;
-// }
-
-// ::-webkit-scrollbar-thumb {
-//   background: rgba(90, 90, 90);
-// }
-
-// ::-webkit-scrollbar-track {
-//   background: rgba(0, 0, 0, 0.2);
-// }
