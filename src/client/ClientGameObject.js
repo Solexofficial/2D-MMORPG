@@ -56,8 +56,15 @@ class ClientGameObject extends MovableObject {
 
       this.moveTo(newCell.x, newCell.y, true, 200);
 
-      // const { x, y, width, height } = newCell;
-      // Object.assign(this, { x, y, width, height });
+      // const {
+      //   x, y, width, height,
+      // } = newCell;
+      // Object.assign(this, {
+      //   x,
+      //   y,
+      //   width,
+      //   height,
+      // });
     }
   }
 
@@ -73,7 +80,6 @@ class ClientGameObject extends MovableObject {
     const state = this.spriteCfg.states[this.state];
     const lengthFrame = state.frames.length;
     const animate = animateEx(lengthFrame, this.animationStartTime, time, state.duration, true);
-    // eslint-disable-next-line no-bitwise
     const frame = ((lengthFrame + animate.offset) | 0) % lengthFrame;
 
     return state.frames[frame];
@@ -84,12 +90,19 @@ class ClientGameObject extends MovableObject {
 
     const { x, y, width, height, world } = this;
     const { engine } = world;
-
+    // states
     const { sprite, frame, type } = this.spriteCfg;
 
     const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);
 
-    engine.renderSpriteFrame({ sprite, frame: spriteFrame, x, y, w: width, h: height });
+    engine.renderSpriteFrame({
+      sprite,
+      frame: spriteFrame,
+      x,
+      y,
+      w: width,
+      h: height,
+    });
   }
 
   detouch() {

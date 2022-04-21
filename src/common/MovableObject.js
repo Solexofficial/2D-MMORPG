@@ -24,14 +24,13 @@ class MovableObject extends PositionedObject {
     );
   }
 
-  // eslint-disable-next-line no-unused-vars
   animateMotion(time) {
     if (this.speed) {
       const me = this;
 
       const dx = animateEx(me.deltaX, me.motionStartTime, time, me.speed);
       const dy = animateEx(me.deltaY, me.motionStartTime, time, me.speed);
-      // const [newX, newY] = [me.toX, me.toY];
+
       const newX = me.toX + dx.offset - me.deltaX;
       const newY = me.toY + dy.offset - me.deltaY;
 
@@ -50,11 +49,9 @@ class MovableObject extends PositionedObject {
   }
 
   render(time) {
-    // eslint-disable-next-line no-unused-expressions
     this.speed && this.animateMotion(time);
   }
 
-  // eslint-disable-next-line no-unused-vars
   moveTo(x, y, smooth = true, speed = 200) {
     let [newX, newY] = [x, y];
     const { width, height } = this;

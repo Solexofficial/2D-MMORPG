@@ -1,26 +1,29 @@
 /* eslint-disable object-curly-newline */
-/* eslint-disable max-len */
 import EventSourceMixin from '../common/EventSourceMixin';
+import { clamp } from '../common/util';
 import ClientCamera from './ClientCamera';
 import ClientInput from './ClientInput';
-import { clamp } from '../common/util';
 
 class ClientEngine {
   constructor(canvas, game) {
     Object.assign(this, {
       canvas,
-      canvases: { main: canvas },
-      ctx: canvas.getContext('2d'),
+      canvases: {
+        main: canvas,
+      },
+      ctx: null,
       imageLoaders: [],
       sprites: {},
       images: {},
       camera: new ClientCamera({ canvas, engine: this }),
       input: new ClientInput(canvas),
       game,
-      startTime: 0,
       lastRenderTime: 0,
+      startTime: 0,
     });
-    this.focus();
+
+    this.ctx = canvas.getContext('2d');
+
     this.loop = this.loop.bind(this);
   }
 
@@ -78,10 +81,9 @@ class ClientEngine {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
-    // const camera = this.camera;
-    const { x: camX, y: camY } = this.camera;
+    const { camera } = this;
 
-    this.ctx.drawImage(img, fx, fy, fw, fh, x - camX, y - camY, w, h);
+    this.ctx.drawImage(img, fx, fy, fw, fh, x - camera.x, y - camera.y, w, h);
   }
 
   addCanvas(name, width, height) {
@@ -133,7 +135,7 @@ class ClientEngine {
   renderSign(opt) {
     const options = {
       color: 'Black',
-      bgColor: 'rgba(252, 252, 252, .7)',
+      bgColor: '#f4f4f4',
       font: '16px sans-serif',
       verticalPadding: 5,
       horizontalPadding: 3,
@@ -142,22 +144,23 @@ class ClientEngine {
       ...opt,
     };
 
-    const { ctx, camera } = this;
+    const { ctx } = this;
+    const { camera } = this;
 
     ctx.textBaseline = options.textBaseline;
     ctx.textAlign = options.textAlign;
     ctx.font = options.font;
 
-    const meassure = ctx.measureText(options.text);
-    const textHeight = meassure.actualBoundingBoxAscent;
+    const measure = ctx.measureText(options.text);
+    const textHeight = measure.actualBoundingBoxAscent;
 
-    const barWidth = clamp(meassure.width + 2 * options.horizontalPadding, options.minWidth, options.maxWidth);
+    const barWidth = clamp(measure.width + 2 * options.horizontalPadding, options.minWidth, options.maxWidth);
     const barHeight = textHeight + 2 * options.verticalPadding;
 
     const barX = options.x - barWidth / 2 - camera.x;
     const barY = options.y - barHeight / 2 - camera.y;
 
-    const textWidth = clamp(meassure.width, 0, barWidth - 2 * options.horizontalPadding);
+    const textWidth = clamp(measure.width, 0, barWidth - 2 * options.horizontalPadding);
 
     ctx.fillStyle = options.bgColor;
     ctx.fillRect(barX, barY, barWidth, barHeight);

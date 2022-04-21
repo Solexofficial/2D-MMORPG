@@ -1,50 +1,88 @@
+/* eslint-disable no-console */
+import ClientApi from './ClientApi';
 import ClientEngine from './ClientEngine';
 import ClientWorld from './ClientWorld';
-
-import sprites from '../configs/sprites';
-import levelCfg from '../configs/world.json';
-import gameObjects from '../configs/gameObjects.json';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg,
-      gameObjects,
+      gameObjects: cfg.gameObjects,
       player: null,
+      players: {},
+      api: new ClientApi({
+        game: this,
+        ...cfg.apiCfg,
+      }),
+      spawnPoint: [],
     });
+    this.api.connect();
 
     this.engine = this.createEngine();
-    this.world = this.createWorld();
+    this.map = this.createWorld();
     this.initEngine();
   }
 
   setPlayer(player) {
     this.player = player;
-    this.player.playerName = this.cfg.playerName;
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagID), this);
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
   }
 
   createWorld() {
-    return new ClientWorld(this, this.engine, levelCfg);
+    return new ClientWorld(this, this.engine, this.cfg.world);
   }
 
   getWorld() {
-    return this.world;
+    return this.map;
   }
 
   initEngine() {
-    this.engine.loadSprites(sprites).then(() => {
-      this.world.init();
+    this.engine.loadSprites(this.cfg.sprites).then(() => {
+      this.map.init();
       this.engine.on('render', (_, time) => {
-        this.engine.camera.focusAtGameObject(this.player);
-        this.world.render(time);
+        this.player && this.engine.camera.focusAtGameObject(this.player);
+        this.map.render(time);
       });
       this.engine.start();
       this.initKeys();
+      this.engine.focus();
+      this.api.join(this.cfg.playerName);
     });
+  }
+
+  setPlayers(playersList) {
+    playersList.forEach((player) => this.createPlayer(player));
+  }
+
+  createCurrentPlayer(playerCfg) {
+    const playerObj = this.createPlayer(playerCfg);
+
+    this.setPlayer(playerObj);
+  }
+
+  // eslint-disable-next-line object-curly-newline
+  createPlayer({ id, col, row, layer, skin, name }) {
+    if (!this.players[id]) {
+      const cell = this.map.cellAt(col, row);
+      const playerObj = cell.createGameObject(
+        {
+          class: 'player',
+          type: skin,
+          playerId: id,
+          playerName: name,
+        },
+        layer,
+      );
+
+      cell.addGameObject(playerObj);
+
+      this.players[id] = playerObj;
+    }
+
+    return this.players[id];
   }
 
   initKeys() {
@@ -57,6 +95,7 @@ class ClientGame {
   }
 
   movePlayerToDir(dir) {
+    this.api.move(dir);
     const dirs = {
       left: [-1, 0],
       right: [1, 0],
@@ -72,17 +111,30 @@ class ClientGame {
         dirs[dir][1],
         (cell) => cell.findObjectsByType('grass').length,
       );
+    }
+  }
 
-      if (canMove) {
-        player.setState(dir);
-        player.once('motion-stopped', () => player.setState('main'));
-      }
+  getPlayerById(id) {
+    return this.players[id];
+  }
+
+  addSpawnPoint(spawnPoint) {
+    this.spawnPoint.push(spawnPoint);
+  }
+
+  removePlayerById(id) {
+    const player = this.getPlayerById(id);
+
+    if (player) {
+      player.detouch();
+      delete this.players[id];
     }
   }
 
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
+      console.log('Game INIT');
     }
   }
 }
