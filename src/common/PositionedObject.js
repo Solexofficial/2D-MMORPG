@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import EventSourceMixin from './EventSourceMixin';
 
 class PositionedObject {
@@ -30,7 +31,6 @@ class PositionedObject {
   }
 
   worldBounds() {
-    // eslint-disable-next-line object-curly-newline
     const { x, y, width, height } = this;
     return {
       x,
@@ -47,6 +47,7 @@ class PositionedObject {
    * @param {int} offsetPercentY Сдвиг относительно верхнего левого угла
    *  в процентах от размера объекта
    */
+
   canvasPosition(offsetPercentX = 0, offsetPercentY = 0) {
     const pos = this.worldPosition(offsetPercentX, offsetPercentY);
 

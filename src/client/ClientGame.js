@@ -1,13 +1,16 @@
-/* eslint-disable no-console */
-import ClientApi from './ClientApi';
+/* eslint-disable object-curly-newline */
 import ClientEngine from './ClientEngine';
 import ClientWorld from './ClientWorld';
+import sprites from '../configs/sprites';
+import levelCfg from '../configs/world.json';
+import gameObjects from '../configs/gameObjects.json';
+import ClientApi from './ClientApi';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg,
-      gameObjects: cfg.gameObjects,
+      gameObjects,
       player: null,
       players: {},
       api: new ClientApi({
@@ -32,7 +35,7 @@ class ClientGame {
   }
 
   createWorld() {
-    return new ClientWorld(this, this.engine, this.cfg.world);
+    return new ClientWorld(this, this.engine, levelCfg);
   }
 
   getWorld() {
@@ -40,7 +43,7 @@ class ClientGame {
   }
 
   initEngine() {
-    this.engine.loadSprites(this.cfg.sprites).then(() => {
+    this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
         this.player && this.engine.camera.focusAtGameObject(this.player);
@@ -63,7 +66,6 @@ class ClientGame {
     this.setPlayer(playerObj);
   }
 
-  // eslint-disable-next-line object-curly-newline
   createPlayer({ id, col, row, layer, skin, name }) {
     if (!this.players[id]) {
       const cell = this.map.cellAt(col, row);
@@ -134,7 +136,6 @@ class ClientGame {
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
-      console.log('Game INIT');
     }
   }
 }

@@ -16,14 +16,15 @@ class ClientInput {
     this.keysPressed.add(e.code);
     this.keyHandlers[e.code] && this.keyHandlers[e.code](true);
     this.trigger('keydown', e);
-    window.document.body.style.overflow = 'hidden';
+    if (e.code === 'ArrowDown' || e.code === 'ArrowUp') {
+      e.preventDefault();
+    }
   }
 
   onKeyUp(e) {
     this.keysPressed.delete(e.code);
     this.keyHandlers[e.code] && this.keyHandlers[e.code](false);
     this.trigger('keyup', e);
-    window.document.body.style.overflow = 'auto';
   }
 
   onKey({ ...handlers }) {

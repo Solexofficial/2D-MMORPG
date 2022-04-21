@@ -26,7 +26,6 @@ class ClientWorld extends PositionedObject {
   }
 
   init() {
-    // eslint-disable-next-line object-curly-newline
     const { levelCfg, map, worldWidth, worldHeight } = this;
 
     for (let row = 0; row < worldHeight; row++) {
@@ -46,10 +45,7 @@ class ClientWorld extends PositionedObject {
   }
 
   render(time) {
-    const {
-      // map, worldWidth, worldHeight,
-      levelCfg,
-    } = this;
+    const { levelCfg } = this;
 
     for (let layerID = 0; layerID < levelCfg.layers.length; layerID++) {
       const layer = levelCfg.layers[layerID];

@@ -3,7 +3,7 @@ const Hapi = require('@hapi/hapi');
 
 const port = process.env.PORT || 3000;
 
-const FILES = /\.(js|js.map|woff|woff2|svg|bmp|jpg|jpeg|gif|png)(\?v=\d+\.\d+\.\d+)?$/;
+const FILES = /\.(js|js.map|woff|woff2|svg|bmp|jpg|jpeg|gif|png|ico)(\?v=\d+\.\d+\.\d+)?$/;
 
 const PATH = {
   '/': 'index.html',
@@ -14,7 +14,6 @@ const init = async () => {
     port,
   });
 
-  // eslint-disable-next-line global-require
   await server.register(require('@hapi/inert'));
 
   server.route({
@@ -24,7 +23,7 @@ const init = async () => {
       if (FILES.test(request.path)) {
         return h.file(path.join(process.cwd(), 'dist', request.path));
       }
-
+      console.log(request.path);
       return h.file(path.join(process.cwd(), 'dist', PATH[request.path]));
     },
   });
