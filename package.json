@@ -2,6 +2,9 @@
   "name": "JSMarathonProEdition",
   "version": "1.0.0",
   "description": "RPG Game",
+  "engines": {
+    "node": "14.17.5"
+  },
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development webpack",
     "build": "cross-env NODE_ENV=production webpack",
